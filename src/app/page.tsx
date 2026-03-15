@@ -375,7 +375,7 @@ Running quick check...
           </div>
           <div className="flex gap-6 text-sm text-gray-500">
             <a href="https://github.com/turleydesigns/clawdoctor" className="hover:text-gray-300 transition">GitHub</a>
-            <a href="mailto:matt@uxcontinuum.com" className="hover:text-gray-300 transition">Contact</a>
+            <a href="/docs" className="hover:text-gray-300 transition">Docs</a>
           </div>
         </div>
       </footer>
