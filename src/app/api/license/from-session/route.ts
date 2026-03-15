@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+function getStripe() {
+  return new Stripe(process.env.STRIPE_SECRET_KEY!);
+}
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
+  const stripe = getStripe();
   const sessionId = req.nextUrl.searchParams.get("session_id");
 
   if (!sessionId) {

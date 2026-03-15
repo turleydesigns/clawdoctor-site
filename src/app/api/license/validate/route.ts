@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+function getStripe() { return new Stripe(process.env.STRIPE_SECRET_KEY!); }
 
 const PLAN_FEATURES: Record<string, string[]> = {
   diagnose: [
@@ -35,6 +35,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
 
   try {
+    const stripe = getStripe();
     const results = await stripe.subscriptions.search({
       query: `metadata['license_key']:'${key}'`,
       limit: 1,

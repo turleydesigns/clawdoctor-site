@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import crypto from "crypto";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+function getStripe() { return new Stripe(process.env.STRIPE_SECRET_KEY!); }
 
 function generateLicenseKey(): string {
   return crypto.randomUUID();
@@ -14,6 +14,7 @@ function planFromPriceId(priceId: string): "diagnose" | "heal" {
 }
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
+    const stripe = getStripe();
   const body = await req.text();
   const sig = req.headers.get("stripe-signature");
 
