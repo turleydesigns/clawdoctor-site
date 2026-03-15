@@ -13,7 +13,7 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AgentWatch - Self-healing monitor for OpenClaw",
+  title: "ClawDoctor - Self-healing monitor for OpenClaw",
   description:
     "Watches your OpenClaw gateway, crons, and sessions. Alerts you on Telegram. Auto-fixes what it can.",
 };

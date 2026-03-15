@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "AgentWatch - Self-healing monitor for OpenClaw",
+  title: "ClawDoctor - Self-healing monitor for OpenClaw",
   description: "Watches your gateway, crons, and sessions. Alerts on Telegram. Auto-fixes what it can.",
 };
 
@@ -89,12 +89,12 @@ export default function Home() {
       <nav className="relative max-w-5xl mx-auto px-6 py-6 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <ShieldIcon />
-          <span className="font-bold text-lg tracking-tight">AgentWatch</span>
+          <span className="font-bold text-lg tracking-tight">ClawDoctor</span>
         </div>
         <div className="flex items-center gap-6 text-sm text-gray-400">
           <a href="#monitors" className="hover:text-white transition">Monitors</a>
           <a href="#pricing" className="hover:text-white transition">Pricing</a>
-          <a href="https://github.com/turleydesigns/agentwatch" className="hover:text-white transition">GitHub</a>
+          <a href="https://github.com/turleydesigns/clawdoctor" className="hover:text-white transition">GitHub</a>
         </div>
       </nav>
 
@@ -110,7 +110,7 @@ export default function Home() {
           breaks at 3am.
           <br />
           <span className="bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
-            AgentWatch fixes it
+            ClawDoctor fixes it
           </span>
           <br />
           <span className="bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
@@ -145,11 +145,11 @@ export default function Home() {
             <div className="w-3 h-3 rounded-full bg-[#ff5f57]" />
             <div className="w-3 h-3 rounded-full bg-[#febc2e]" />
             <div className="w-3 h-3 rounded-full bg-[#28c840]" />
-            <span className="ml-3 text-xs text-gray-500 font-mono">~ agentwatch status</span>
+            <span className="ml-3 text-xs text-gray-500 font-mono">~ clawdoctor status</span>
           </div>
           <div className="p-6 md:p-8">
             <pre className="text-[13px] md:text-sm font-mono leading-relaxed text-gray-300">
-{`AgentWatch Status
+{`ClawDoctor Status
 ─────────────────
 Daemon:     `}<span className="text-green-400">●</span>{` running
 Telegram:   `}<span className="text-green-400">✓</span>{` enabled
@@ -196,7 +196,7 @@ Running quick check...
       <section className="relative max-w-5xl mx-auto px-6 pb-24">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold mb-3">What It Fixes</h2>
-          <p className="text-gray-400">Not just alerts. AgentWatch takes action.</p>
+          <p className="text-gray-400">Not just alerts. ClawDoctor takes action.</p>
         </div>
         <div className="space-y-4 max-w-2xl mx-auto">
           <div className="flex gap-5 p-6 rounded-xl bg-white/[0.02] border border-white/[0.06]">
@@ -228,7 +228,7 @@ Running quick check...
             <div>
               <h3 className="font-semibold mb-1.5 text-[15px]">Coming in v2: token refresh, config repair, approval flows</h3>
               <p className="text-sm text-gray-500 leading-relaxed">
-                OAuth token expired? AgentWatch refreshes it. Config drift? Snapshots and repairs. Risky fix? Asks you on Telegram first.
+                OAuth token expired? ClawDoctor refreshes it. Config drift? Snapshots and repairs. Risky fix? Asks you on Telegram first.
               </p>
             </div>
           </div>
@@ -249,16 +249,16 @@ Running quick check...
           <div className="p-6 font-mono text-sm space-y-3">
             <div>
               <span className="text-gray-500 select-none">$ </span>
-              <span className="text-green-400">npm install -g agentwatch</span>
+              <span className="text-green-400">npm install -g clawdoctor</span>
             </div>
             <div>
               <span className="text-gray-500 select-none">$ </span>
-              <span className="text-green-400">agentwatch init</span>
+              <span className="text-green-400">clawdoctor init</span>
               <span className="text-gray-600 ml-3"># detects OpenClaw, configures alerts</span>
             </div>
             <div>
               <span className="text-gray-500 select-none">$ </span>
-              <span className="text-green-400">agentwatch start</span>
+              <span className="text-green-400">clawdoctor start</span>
               <span className="text-gray-600 ml-3"># monitors everything</span>
             </div>
           </div>
@@ -371,10 +371,10 @@ Running quick check...
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div className="flex items-center gap-2 text-gray-500">
             <ShieldIcon />
-            <span className="text-sm">AgentWatch</span>
+            <span className="text-sm">ClawDoctor</span>
           </div>
           <div className="flex gap-6 text-sm text-gray-500">
-            <a href="https://github.com/turleydesigns/agentwatch" className="hover:text-gray-300 transition">GitHub</a>
+            <a href="https://github.com/turleydesigns/clawdoctor" className="hover:text-gray-300 transition">GitHub</a>
             <a href="mailto:matt@uxcontinuum.com" className="hover:text-gray-300 transition">Contact</a>
           </div>
         </div>
