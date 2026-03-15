@@ -203,7 +203,7 @@ function WelcomeContent() {
                 <li className="flex items-start gap-3 text-sm text-gray-400"><CheckIcon /> 30-day event history</li>
                 <li className="flex items-start gap-3 text-sm text-gray-400"><CheckIcon /> Smart alerts with root cause analysis</li>
                 <li className="flex items-start gap-3 text-sm text-gray-400"><CheckIcon /> Known-issue pattern matching</li>
-                <li className="flex items-start gap-3 text-sm text-gray-400"><CheckIcon /> Telegram, Slack, and Discord alerts</li>
+                <li className="flex items-start gap-3 text-sm text-gray-400"><CheckIcon /> Telegram alerts</li>
               </>
             )}
           </ul>

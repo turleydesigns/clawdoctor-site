@@ -34,6 +34,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ valid: false, error: "Missing key" }, { status: 400 });
   }
 
+  const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  if (!UUID_RE.test(key)) {
+    return NextResponse.json({ valid: false });
+  }
+
   try {
     const stripe = getStripe();
     const results = await stripe.subscriptions.search({

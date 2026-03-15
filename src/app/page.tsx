@@ -226,7 +226,7 @@ Running quick check...
               <WrenchIcon />
             </div>
             <div>
-              <h3 className="font-semibold mb-1.5 text-[15px]">Coming in v2: token refresh, config repair, approval flows</h3>
+              <h3 className="font-semibold mb-1.5 text-[15px]">Available now in Heal tier: token refresh, config repair, approval flows</h3>
               <p className="text-sm text-gray-500 leading-relaxed">
                 OAuth token expired? ClawDoctor refreshes it. Config drift? Snapshots and repairs. Risky fix? Asks you on Telegram first.
               </p>
@@ -310,7 +310,7 @@ Running quick check...
                 "30-day history",
                 "Smart alerts with root cause",
                 "Known-issue pattern matching",
-                "Telegram + Slack + Discord",
+                "Telegram alerts",
               ].map((f) => (
                 <li key={f} className="flex items-center gap-2.5"><CheckIcon /> {f}</li>
               ))}

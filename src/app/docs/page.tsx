@@ -165,14 +165,10 @@ systemctl --user start clawdoctor`}</CodeBlock>
               <p>This validates the key against the ClawDoctor API and stores it in <code className="text-green-400/80 bg-green-400/5 px-1.5 py-0.5 rounded font-mono text-sm">~/.clawdoctor/license.json</code>. On success, it shows your plan name and the features it unlocks.</p>
 
               <SubSection title="Using an environment variable">
-                <p>You can also set the license key via environment variable without running the activate command:</p>
+                <p>You can set the license key via environment variable. When <code className="text-green-400/80 bg-green-400/5 px-1.5 py-0.5 rounded font-mono text-sm">CLAWDOCTOR_KEY</code> is set, it takes precedence over <code className="text-green-400/80 bg-green-400/5 px-1.5 py-0.5 rounded font-mono text-sm">~/.clawdoctor/license.json</code>:</p>
                 <CodeBlock>{`export CLAWDOCTOR_KEY=your-license-key
 clawdoctor start`}</CodeBlock>
-              </SubSection>
-
-              <SubSection title="Using the --key flag">
-                <p>Pass the key directly at runtime:</p>
-                <CodeBlock>{`clawdoctor start --key your-license-key`}</CodeBlock>
+                <p>If neither the environment variable nor <code className="text-green-400/80 bg-green-400/5 px-1.5 py-0.5 rounded font-mono text-sm">~/.clawdoctor/license.json</code> is present, ClawDoctor runs on the free plan.</p>
               </SubSection>
 
               <SubSection title="Check your current plan">

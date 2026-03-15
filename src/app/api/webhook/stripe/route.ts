@@ -49,19 +49,25 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     }
 
     const plan = planFromPriceId(priceId);
-    const key = generateLicenseKey();
 
     const subscriptionId = typeof session.subscription === "string"
       ? session.subscription
       : (session.subscription as Stripe.Subscription | null)?.id;
 
     if (subscriptionId) {
+      // Idempotency: skip key generation if license_key already exists
+      const sub = await stripe.subscriptions.retrieve(subscriptionId);
+      if (sub.metadata.license_key) {
+        console.log(`[webhook] License already exists for subscription ${subscriptionId}, skipping`);
+        return NextResponse.json({ received: true });
+      }
+
+      const key = generateLicenseKey();
       await stripe.subscriptions.update(subscriptionId, {
         metadata: { license_key: key, plan },
       });
+      console.log(`[webhook] License created for ${plan} plan`);
     }
-
-    console.log(`[webhook] License created for ${plan} plan`);
   }
 
   return NextResponse.json({ received: true });
