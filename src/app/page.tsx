@@ -94,6 +94,7 @@ export default function Home() {
         <div className="flex items-center gap-6 text-sm text-gray-400">
           <a href="#monitors" className="hover:text-white transition">Monitors</a>
           <a href="#pricing" className="hover:text-white transition">Pricing</a>
+          <a href="/blog" className="hover:text-white transition">Blog</a>
           <a href="https://github.com/turleydesigns/clawdoctor" className="hover:text-white transition">GitHub</a>
         </div>
       </nav>
