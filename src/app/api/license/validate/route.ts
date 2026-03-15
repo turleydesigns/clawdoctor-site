@@ -51,7 +51,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     }
 
     const sub = results.data[0];
-    if (sub.status !== "active") {
+    if (sub.status !== "active" && sub.status !== "trialing") {
       return NextResponse.json({ valid: false });
     }
 
