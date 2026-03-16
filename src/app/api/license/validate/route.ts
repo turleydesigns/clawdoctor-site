@@ -1,17 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import fs from "fs";
+import Stripe from "stripe";
 
-const LICENSES_FILE = "/tmp/clawdoctor-licenses.json";
-
-interface LicenseRecord {
-  key: string;
-  customerId: string;
-  email: string;
-  plan: "diagnose" | "heal";
-  status: "active" | "cancelled";
-  sessionId: string;
-  createdAt: string;
-}
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 const PLAN_FEATURES: Record<string, string[]> = {
   diagnose: [
@@ -31,17 +21,6 @@ const PLAN_FEATURES: Record<string, string[]> = {
   ],
 };
 
-function loadLicenses(): Record<string, LicenseRecord> {
-  try {
-    if (fs.existsSync(LICENSES_FILE)) {
-      return JSON.parse(fs.readFileSync(LICENSES_FILE, "utf-8"));
-    }
-  } catch {
-    // ignore
-  }
-  return {};
-}
-
 export async function POST(req: NextRequest): Promise<NextResponse> {
   let body: { key?: string };
   try {
@@ -55,18 +34,33 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ valid: false, error: "Missing key" }, { status: 400 });
   }
 
-  const licenses = loadLicenses();
-  const record = licenses[key];
-
-  if (!record || record.status !== "active") {
+  const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  if (!UUID_RE.test(key)) {
     return NextResponse.json({ valid: false });
   }
 
-  return NextResponse.json({
-    valid: true,
-    plan: record.plan,
-    features: PLAN_FEATURES[record.plan] ?? [],
-    email: record.email,
-    createdAt: record.createdAt,
-  });
+  try {
+    const results = await stripe.subscriptions.search({
+      query: `metadata['license_key']:'${key}'`,
+      limit: 1,
+    });
+
+    if (results.data.length === 0) {
+      return NextResponse.json({ valid: false });
+    }
+
+    const sub = results.data[0];
+    if (sub.status !== "active") {
+      return NextResponse.json({ valid: false });
+    }
+
+    const plan = (sub.metadata.plan as "diagnose" | "heal") ?? "diagnose";
+    return NextResponse.json({
+      valid: true,
+      plan,
+      features: PLAN_FEATURES[plan] ?? [],
+    });
+  } catch {
+    return NextResponse.json({ valid: false, error: "Validation failed" }, { status: 500 });
+  }
 }

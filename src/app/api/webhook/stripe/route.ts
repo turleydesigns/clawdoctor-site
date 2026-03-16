@@ -1,36 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
-import fs from "fs";
 import crypto from "crypto";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
-
-const LICENSES_FILE = "/tmp/clawdoctor-licenses.json";
-
-interface LicenseRecord {
-  key: string;
-  customerId: string;
-  email: string;
-  plan: "diagnose" | "heal";
-  status: "active" | "cancelled";
-  sessionId: string;
-  createdAt: string;
-}
-
-function loadLicenses(): Record<string, LicenseRecord> {
-  try {
-    if (fs.existsSync(LICENSES_FILE)) {
-      return JSON.parse(fs.readFileSync(LICENSES_FILE, "utf-8"));
-    }
-  } catch {
-    // ignore parse errors
-  }
-  return {};
-}
-
-function saveLicenses(licenses: Record<string, LicenseRecord>): void {
-  fs.writeFileSync(LICENSES_FILE, JSON.stringify(licenses, null, 2), "utf-8");
-}
 
 function generateLicenseKey(): string {
   return crypto.randomUUID();
@@ -59,8 +31,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session;
 
-    const customerId = typeof session.customer === "string" ? session.customer : session.customer?.id ?? "";
-    const email = session.customer_details?.email ?? session.customer_email ?? "";
+    if (session.payment_status !== "paid") {
+      console.log("[webhook] Payment not completed, skipping");
+      return NextResponse.json({ received: true });
+    }
 
     // Determine plan from line items
     let priceId = "price_1TB1Vi2sVp9zfTN0IcwDkQNp"; // default: diagnose
@@ -76,23 +50,22 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const plan = planFromPriceId(priceId);
     const key = generateLicenseKey();
 
-    const record: LicenseRecord = {
-      key,
-      customerId,
-      email,
-      plan,
-      status: "active",
-      sessionId: session.id,
-      createdAt: new Date().toISOString(),
-    };
+    const subscriptionId = typeof session.subscription === "string"
+      ? session.subscription
+      : (session.subscription as Stripe.Subscription | null)?.id;
 
-    const licenses = loadLicenses();
-    licenses[key] = record;
-    // Also index by sessionId for fast lookup
-    licenses[`session:${session.id}`] = record;
-    saveLicenses(licenses);
+    if (subscriptionId) {
+      const existingSub = await stripe.subscriptions.retrieve(subscriptionId);
+      if (existingSub.metadata.license_key) {
+        console.log('[webhook] License key already exists, skipping');
+        return NextResponse.json({ received: true });
+      }
+      await stripe.subscriptions.update(subscriptionId, {
+        metadata: { license_key: key, plan },
+      });
+    }
 
-    console.log(`[webhook] License created: ${key} (${plan}) for ${email}`);
+    console.log(`[webhook] License created for ${plan} plan`);
   }
 
   return NextResponse.json({ received: true });
